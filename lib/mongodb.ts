@@ -1,11 +1,4 @@
 import mongoose, { Mongoose } from "mongoose";
-import {options} from "preact";
-
-const MONGODB_URI = process.env.MONGODB_URI;
-
-if (!MONGODB_URI) {
-    throw new Error("Please define the MONGODB_URI environment variable.");
-}
 
 type MongooseCache = {
     conn: Mongoose | null;
@@ -28,6 +21,11 @@ if (!globalThis.mongooseCache) {
 }
 
 export async function connectToDatabase(): Promise<Mongoose> {
+    const MONGODB_URI = process.env.MONGODB_URI;
+    if (!MONGODB_URI) {
+        throw new Error("Please define the MONGODB_URI environment variable.");
+    }
+
     // Return active connection immediately.
     if (cached.conn) {
         return cached.conn;
@@ -35,7 +33,7 @@ export async function connectToDatabase(): Promise<Mongoose> {
 
     // Share one in-flight connection promise across concurrent calls.
     if (!cached.promise) {
-        cached.promise = mongoose.connect(MONGODB_URI!);
+        cached.promise = mongoose.connect(MONGODB_URI);
     }
 
     try {

@@ -10,7 +10,7 @@ export interface IEvent extends Document {
   location: string;
   date: string;
   time: string;
-  mode: "online" | "offline" | "hybrid" | string;
+  mode: EventMode;
   audience: string;
   agenda: string[];
   organizer: string;
@@ -20,6 +20,7 @@ export interface IEvent extends Document {
 }
 
 type EventModel = Model<IEvent>;
+export type EventMode = "online" | "offline" | "hybrid";
 
 const slugify = (value: string): string =>
   value
@@ -107,8 +108,6 @@ const eventSchema = new Schema<IEvent, EventModel>(
   }
 );
 
-eventSchema.index({ slug: 1 }, { unique: true });
-
 eventSchema.pre("save", function (next) {
   try {
     // Regenerate slug only when title changes to keep URLs stable.
@@ -138,4 +137,3 @@ eventSchema.pre("save", function (next) {
 
 export const Event: EventModel =
   (mongoose.models.Event as EventModel) || mongoose.model<IEvent, EventModel>("Event", eventSchema);
-

@@ -36,7 +36,7 @@ const bookingSchema = new Schema<IBooking, BookingModel>(
   }
 );
 
-bookingSchema.index({ eventId: 1 });
+bookingSchema.index({ eventId: 1, email: 1 }, { unique: true });
 
 bookingSchema.pre("save", async function (next) {
   try {
@@ -57,4 +57,3 @@ bookingSchema.pre("save", async function (next) {
 export const Booking: BookingModel =
   (mongoose.models.Booking as BookingModel) ||
   mongoose.model<IBooking, BookingModel>("Booking", bookingSchema);
-
