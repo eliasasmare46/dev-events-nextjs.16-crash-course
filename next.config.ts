@@ -1,19 +1,64 @@
+// import type { NextConfig } from "next";
+//
+// const nextConfig: NextConfig = {
+//   images: {
+//     remotePatterns: [
+//       {
+//         protocol:'https',
+//         hostname:'res.cloudinary.com',
+//       }
+//     ]
+//   },
+//   async rewrites() {
+//     return [
+//       {
+//         source: "/ingest/static/:path*",
+//         destination: "https://us-assets.i.posthog.com/static/:path*",
+//       },
+//       {
+//         source: "/ingest/:path*",
+//         destination: "https://us.i.posthog.com/:path*",
+//       },
+//     ];
+//   },
+//   skipTrailingSlashRedirect: true,
+// };
+//
+// export default nextConfig;
+
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: "/ingest/static/:path*",
-        destination: "https://us-assets.i.posthog.com/static/:path*",
-      },
-      {
-        source: "/ingest/:path*",
-        destination: "https://us.i.posthog.com/:path*",
-      },
-    ];
-  },
-  skipTrailingSlashRedirect: true,
+    cacheComponents: true,
+    images: {
+        remotePatterns: [
+            {
+                protocol: 'https',
+                hostname: 'res.cloudinary.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'images.unsplash.com',
+            },
+            {
+                protocol: 'https',
+                hostname: 'plus.unsplash.com',
+            }
+        ]
+    },
+    async rewrites() {
+        return [
+            {
+                source: "/ingest/static/:path*",
+                destination: "https://us-assets.i.posthog.com/static/:path*",
+            },
+            {
+                source: "/ingest/:path*",
+                destination: "https://us.i.posthog.com/:path*",
+            },
+        ];
+    },
+    skipTrailingSlashRedirect: true,
 };
 
 export default nextConfig;
